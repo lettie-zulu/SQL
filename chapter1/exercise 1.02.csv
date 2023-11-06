@@ -1,0 +1,4 @@
+"animal_id","animal_type_id","name","gender","date_of_birth","health_status","enclosure_number"
+1,1,"Simba","Male","2018-05-10","Good",1
+2,2,"Dumbo","Male","2015-12-20","Excellent",2
+3,3,"Chilly","Female","2020-02-15","Fair",3

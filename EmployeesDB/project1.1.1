@@ -1,0 +1,144 @@
+BEGIN;
+
+CREATE TABLE IF NOT EXISTS public.employees
+(
+    emp_id bigserial NOT NULL,
+    first_name character varying(50) NOT NULL,
+    surname character varying(50) NOT NULL,
+    gender character varying(10),
+    address character varying(150),
+    email character varying(225),
+    depart_id bigserial,
+    role_id bigserial,
+    salary_id bigserial,
+    overtime_id bigserial,
+    PRIMARY KEY (emp_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.department
+(
+    depart_id bigserial NOT NULL,
+    depart_name character varying(50) NOT NULL,
+    depart_city character varying(50),
+    PRIMARY KEY (depart_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.roles
+(
+    role_id bigserial NOT NULL,
+    role character varying(50),
+    PRIMARY KEY (role_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.salaries
+(
+    salary_id bigserial NOT NULL,
+    salary bigint,
+    PRIMARY KEY (salary_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.overtime_hours
+(
+    overtime_id bigserial NOT NULL,
+    overtime_hours numeric,
+    PRIMARY KEY (overtime_id)
+);
+
+ALTER TABLE IF EXISTS public.employees
+    ADD CONSTRAINT depart_id FOREIGN KEY (depart_id)
+    REFERENCES public.department (depart_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.employees
+    ADD CONSTRAINT role_id FOREIGN KEY (role_id)
+    REFERENCES public.roles (role_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.employees
+    ADD CONSTRAINT salary_id FOREIGN KEY (salary_id)
+    REFERENCES public.salaries (salary_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.employees
+    ADD CONSTRAINT overtime_id FOREIGN KEY (overtime_id)
+    REFERENCES public.overtime_hours (overtime_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+END;
+
+INSERT INTO department (depart_id, depart_name, depart_city)
+VALUES
+(1,'Reception', 'Centurion'),
+(2,'Finance', 'Edenvale'),
+(3,'Human Resources', 'Northmead'),
+(4,'Data analyst', 'Bryanston'); 
+
+SELECT * FROM department;
+
+INSERT INTO roles (role_id, role)
+VALUES
+(1, 'Receptionist'),
+(2, 'Accounting'),
+(3, 'Recruitment'),
+(4, 'Data Analysis');
+
+ SELECT * FROM roles;
+ 
+ INSERT INTO salaries (salary_id, salary)
+VALUES
+(1, 12000),
+(2, 250000),
+(3, 570000);
+
+SELECT * FROM salaries;
+
+INSERT INTO overtime_hours (overtime_id, overtime_hours)
+VALUES
+(1, 0),
+(2, 6),
+(3, 8),
+(4, 11),
+(5, 13);
+
+SELECT * FROM overtime_hours;
+ 
+INSERT INTO employees (first_name, surname, gender, address, email, depart_id, role_id, salary_id, overtime_id)
+VALUES
+--('Maggie', 'Modise', 'F', '69 Motsweding Str', 'maggie@gmail.com', 5, 3, 3, 4);
+('Nhlakanipho', 'Meva', 'M', '71 Edison Str', 'nipho@gmail.com', 4, 4, 3, 1),
+('Thuto', 'Modise', 'F', '6 Ndlanzi str', 'thuto@gmail.com', 3, 3, 2, 2),
+('Oratiloe', 'Mnguni', 'F', '88 Matsau str', 'Ora@gmail.com', 2, 2, 1, 3),
+('Mbali', 'Ngwenya', 'M', '23 Pono str','mbali@gmail.com', 1, 1, 2, 4),
+('Thobile', 'Msiza', 'F', '4 Chris Hani str', 'thobi@gmail.com', 1, 1, 1, 5),
+('Buhle', 'Douglas', 'M', '2 Tlhako str', 'buhle@gmail.com', 2, 2, 3, 1),
+('Hlehle', 'Zoba', 'F', '59 Tana str', 'hlehle@gmail.com', 3, 3, 2, 5),
+('Ndalo', 'Zwane', 'F', '25 Tonsti Str', 'ndalo@gmail.com', 4, 4, 1, 2),
+('Mpumelelo', 'Mahlangu', 'M', '14 Tom str', 'Mpumi@gmail.com', 4, 4, 2, 3),
+('Maggie', 'Modise', 'F', '69 Motsweding Str', 'maggie@gmail.com', 3, 3, 3, 4);
+
+SELECT * FROM employees;
+
+SELECT emp.first_name AS first_name
+, emp.surname AS surname
+, emp.address AS address
+, emp.email AS email
+, dep.depart_name AS depart_name
+, rol.role AS roles
+, sal.salary AS salary
+, ovr.overtime_hours AS overtime_hours
+FROM employees AS emp
+LEFT JOIN department AS dep ON emp.depart_id = dep.depart_id
+LEFT JOIN roles AS rol ON emp.role_id = rol.role_id
+LEFT JOIN salaries AS sal ON emp.salary_id = sal.salary_id
+LEFT JOIN overtime_hours AS ovr ON emp.overtime_id = ovr.overtime_id;

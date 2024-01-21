@@ -19,7 +19,7 @@ CREATE TABLE users (
 INSERT INTO users (name)
 VALUES
 ('Lettie'),
-('Tyeishia');
+('Natasha');
 
 CREATE TABLE cart (
     product_id integer REFERENCES product_menu (id),

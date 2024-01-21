@@ -18,7 +18,7 @@ CREATE TABLE users (
 
 INSERT INTO users (name)
 VALUES
-('Jada'),
+('Lettie'),
 ('Tyeishia');
 
 CREATE TABLE cart (
